@@ -4,6 +4,7 @@ In my abstract algebra course, we did some work with elliptic curves and the gro
 
 The program will ask for two values to create a key, and then allow you to input a message to either encode or decode using the key.
 
+![image](https://github.com/user-attachments/assets/34b379b9-f1e6-41f3-afeb-bd4aff899615)
 
 ## Abstract algebra, for those who are interested
 The elements of elliptic curve groups are the points that satisfy an elliptic equation, i.e. the points that satisfy
