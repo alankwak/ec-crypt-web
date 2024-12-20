@@ -177,11 +177,11 @@ def main():
     
     while c != 4:
         if c == 1:
-            m = input('Enter your message:')
+            m = input('Enter your message: ')
             e = encrypt(m, key)
             print(f'Your encrypted message is:\n\t{e}')
         elif c == 2:
-            m = input('Enter your encoded message:')
+            m = input('Enter your encoded message: ')
             s = decrypt(m, key)
             print(f'Your secret message is:\n\t{s}')
         elif c == 3:
