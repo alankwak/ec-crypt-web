@@ -1,4 +1,4 @@
-# ec_crypt
+# ec-crypt
 
 In my abstract algebra course, we did some work with elliptic curves and the groups they create under modular arithmetic. This program uses these groups to encode and decode messages.
 
