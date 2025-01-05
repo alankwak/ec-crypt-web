@@ -1,5 +1,7 @@
 # ec-crypt
 
+## Alert: I found a bug where the program calculates the wrong point when combining two points. While you can still generate secret codes using the program, they are only decipherable using this program because the key is wrong. I have an idea on how to fix this.
+
 In my abstract algebra course, we did some work with elliptic curves and the groups they create under modular arithmetic. This program uses these groups to encode and decode messages.
 
 The program will ask for two values to create a key, and then allow you to input a message to either encode or decode using the key.
