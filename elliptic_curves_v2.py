@@ -1,28 +1,5 @@
 ## Elliptic Curve Cryptology Program ##
 
-# Helper Functions for Matrix Operations 
-
-def resize(arr, size):
-    newarr = [[None] * size[1] for i in range(size[0])]
-    for i in range(len(arr)):
-        newarr[int(i/size[0])][i%size[1]] = arr[i]
-    return newarr
-
-def isUnique(pts):
-    for p in pts:
-        if pts.count(p) > 1:
-            return False
-    return True
-
-def testTable(table):
-    for i in range(len(table[0])):
-        pts2 = [table[j][i] for j in range(len(table[0]))]
-        if not isUnique(table[i]):
-            return i + 1
-        if not isUnique(pts2):
-            return -(i - 1)
-    return 0
-
 class ecCayleyTable:
     ## ------------------------------- Initialization ------------------------------- ##
 
