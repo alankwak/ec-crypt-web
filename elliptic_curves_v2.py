@@ -1,5 +1,20 @@
 ## Elliptic Curve Cryptology Program ##
 
+def isUnique(pts):
+    for p in pts:
+        if pts.count(p) > 1:
+            return False
+    return True
+
+def testTable(table):
+    for i in range(len(table[0])):
+        pts2 = [table[j][i] for j in range(len(table[0]))]
+        if not isUnique(table[i]):
+            return i + 1
+        if not isUnique(pts2):
+            return -(i - 1)
+    return 0
+
 class ecCayleyTable:
     ## ------------------------------- Initialization ------------------------------- ##
 
@@ -164,7 +179,7 @@ class ecLetterKey:
         message = message.upper()
         
         junk_chars = []
-        for i in range(65, 97):
+        for i in range(65, 90):
             if self.combos.get(chr(i)) is None:
                 junk_chars.append(chr(i))
 
@@ -210,7 +225,7 @@ class ecLetterKey:
             ret = ret + f'\n{11*(len(self.letters)+1)*'-'}\n'
         return ret
     
-def isPrime(num):
+def isPrime(num: int):
   if num < 2:
     return False
   for i in range(2, int(num**(1/2))+1):
