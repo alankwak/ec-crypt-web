@@ -249,7 +249,7 @@ def main():
     print(f'Input parameters for the elliptic curve key:\n(of the form x^3 + ax + b, where (4a^3 + 27b^2) mod {mod} != 0 and a and b are integers)')
     a = int(input('\ta = '))
     b = int(input('\tb = '))
-    while (4*a**3 + 27*b**2) % 13 == 0:
+    while (4*a**3 + 27*b**2) % mod == 0:
         print(f'Input does not satisfy (4a^3 + 27b^2) mod {mod} != 0. Please enter other values:')
         a = int(input('\ta = '))
         b = int(input('\tb = '))
