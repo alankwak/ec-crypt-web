@@ -26,10 +26,6 @@ const executePythonScript = (scriptPath, args) => {
 
 const app = express();  
 const port = 53140;
-const handlebars = require('express-handlebars').create({ defaultLayout: 'main' });
-
-app.engine('handlebars', handlebars.engine); 
-app.set('view engine', 'handlebars');
 
 app.use(morgan('dev'));
 app.use(express.static('public'));
@@ -39,29 +35,30 @@ app.use(bodyParser.json());
 // Basic route
 
 app.get('/', async (req, res) => {
-    const mod = req.query.mod || 13;
-    const a = req.query.a;
-    const b = req.query.b;
+    res.render('index.html')
+    return
+});
+    
+app.post('/update-curve', async (req, res) => {
+    const mod = parseInt(req.body.mod) || 13;
+    const a = parseInt(req.body.a);
+    const b = parseInt(req.body.b);
 
     if(!a || !b) {
-        res.render('ecInfo');
-        return;
+        res.status(500).send("Invalid Request");
     }
 
     try {
         let ecInfo = await executePythonScript('py_scripts/getEcInfo.py', [a, b, mod, "", ""]);
         ecInfo = JSON.parse(ecInfo);
 
-        res.render('ecInfo', {
-            'a': a,
-            'b': b,
-            'mod': mod,
+        console.log('success');
+        res.json({
             'cthead': ecInfo.cthead, 
             'ctbody': ecInfo.ctbody,
             'echead': ecInfo.echead,
-            'ecbody': ecInfo.ecbody,
-            'encrypted-message': ecInfo.encrypted,
-            'decrypted-message': ecInfo.decrypted});
+            'ecbody': ecInfo.ecbody
+        });
     } catch (error) {
         console.error('Error executing Python script:', error);
         res.status(500).send('Internal Server Error');
