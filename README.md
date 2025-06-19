@@ -18,6 +18,12 @@ for some $a, \ b$, such that $4a^3 + 27b^2 \pmod{n} \neq 0$. There is also an id
 
 The group operation is defined by $A \cdot B = -C$, where $C$ is the third point on the elliptic curve that also lies on the line drawn through $A$ and $B$. If no such point exists, we define $C$ to be $\infty$. The point $-C$ is the point obtained by reflecting $C$ over the x-axis.
 
-We can assign every point a letter value, and then combine letters together using this operation to obtain a new letter. The cipher works by combining every two letters in the encrypted message to output the decrypted message. There are multiple ways to combine letters to get a given letter, so it is possible to obtain different encrypted messages for a single decrypted message. When encrypting, the program chooses the pairing it will use randomly.
+We can assign every point a letter value, and then combine letters together using this operation to obtain a new letter. The encryption works by checking if the current letter can be represented by a combination of two letters from the key. If it can, then it is converted to this combination, and if it cannot, then it is left as it is. There are multiple ways to combine letters to get a given letter, so it is possible to obtain different encrypted messages for a single decrypted message. When encrypting, the program chooses the pairing it will use randomly.
 
-In addition, it is worth noting that not all letters will be defined by a point on the elliptic curve. In this case, the encrypted message contains a pairing of "junk characters," where the first is the letter that is used in the decoded message. Even when it is possible for a letter to be represented by a point, there is a chance the program will choose this method instead.
+To decrypt a message is fairly straightforward: again, we can check if a letter is representable in the key. If it is, then we check the next letter and combine the two using the key, and if it isn't, then we leave it as it is and move to the next letter. 
+
+As you use the program, you might notice that you sometimes get messages where some of the original text does not appear to be encrypted. You probably have an elliptic curve group with very few elements, and therefore very few letters in the alphabet that are encodable. If you're having trouble finding a large elliptic curve group to use under mod 13, try $a=1$ and $b=0$.
+
+Other best practices when using the encryption system (though the program should still work if you ignore these):
+- use mod 13
+- only use alphabetic characters (A-Z), case does not matter
