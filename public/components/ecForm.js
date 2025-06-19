@@ -17,25 +17,70 @@ class ecForm extends HTMLElement {
 
     render() {
         this.shadowRoot.innerHTML = `
+            <style>
+                :host {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-family: Arial, sans-serif;
+                }
+
+                #ecForm {
+                    background: white;
+                    padding: 20px 30px;
+                    border-radius: 10px;
+                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+                    text-align: center;
+                }
+
+                input[type=number]::-webkit-outer-spin-button,
+                input[type=number]::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+
+                input[type=number] {
+                    -moz-appearance: textfield;
+                    width: 50px;
+                    padding: 5px;
+                    margin: 0 5px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    text-align: center;
+                }
+
+                button {
+                    margin-top: 10px;
+                    padding: 8px 16px;
+                    border: none;
+                    background-color: #007bff;
+                    color: white;
+                    font-size: 14px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                }
+
+                button:hover {
+                    background-color: #0056b3;
+                }
+
+                #error {
+                    display: block;
+                    margin-top: 5px;
+                    color: red;
+                    font-size: 0.9em;
+                }
+            </style>
+        
             <form id="ecForm">
                 <div>
-                    <style>
-                        input[type=number]::-webkit-outer-spin-button,
-                        input[type=number]::-webkit-inner-spin-button {
-                            -webkit-appearance: none;
-                            margin: 0;
-                        }
-
-                        input[type=number] {
-                            -moz-appearance: textfield;
-                        }
-                    </style>
                     <span>y² ≡ x³ +</span>
                     <input type="number" style="width: 40px" id="a" name="a" placeholder="a" step="1" value="${this.a !== null ? this.a : ''}" required>
                     <span>x +</span>
                     <input type="number" style="width: 40px" id="b" name="b" placeholder="b" step="1" value="${this.b !== null ? this.b : ''}" required>
                     <span>( mod </span>
-                    <input type="number" style="width: 40px" id="mod" name="mod" min="3" step="1" value="${this.mod}" required>
+                    <input type="number" style="width: 40px" id="mod" name="mod" min="3" max="149" step="1" value="${this.mod}" required>
                     <span>)</span>
                     <span id="error" style="color: red;"></span>
                     <br>
@@ -65,7 +110,7 @@ class ecForm extends HTMLElement {
             const b = parseInt(bin.value, 10);
 
             if (!isPrime(mod) || mod >= 200) {
-                error.innerHTML = "Mod must be a prime number less than 200.";
+                error.innerHTML = "Mod must be a prime number.";
             } else if ((4*a*a*a + 27*b*b) % mod === 0) {
                 error.innerHTML = `Invalid elliptic curve parameters (4a³ + 27b² (mod${mod}) = 0).`;
             } else {
