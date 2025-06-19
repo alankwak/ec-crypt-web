@@ -127,21 +127,21 @@ class ecCayleyTable:
         return self.oppositePt(ans)
 
 
-    # Output the Cayley Table in string format (for printing)
-    def __str__(self):
-        ret = f'Cayley Table:\n{9*' '}'
-        for p in self.pts:
-            n = 8 - len(str(p))
-            ret = ret + f'| {p} {n*' '}'
-        ret = ret + f'\n{11*(len(self.pts)+1)*'-'}\n'
-        for i in range(len(self.pts)):
-            n = 8 - len(str(self.pts[i]))
-            ret = ret + f'{self.pts[i]} {n*' '}'
-            for p in self.table[i]:
-                n2 = 8 - len(str(p))
-                ret = ret + f'| {p} {n2*' '}'
-            ret = ret + f'\n{11*(len(self.pts)+1)*'-'}\n'
-        return ret
+    # # Output the Cayley Table in string format (for printing)
+    # def __str__(self):
+    #     ret = f"Cayley Table:\n{9*' '}"
+    #     for p in self.pts:
+    #         n = 8 - len(str(p))
+    #         ret = ret + f'| {p} {n*' '}'
+    #     ret = ret + f'\n{11*(len(self.pts)+1)*'-'}\n'
+    #     for i in range(len(self.pts)):
+    #         n = 8 - len(str(self.pts[i]))
+    #         ret = ret + f'{self.pts[i]} {n*' '}'
+    #         for p in self.table[i]:
+    #             n2 = 8 - len(str(p))
+    #             ret = ret + f'| {p} {n2*' '}'
+    #         ret = ret + f'\n{11*(len(self.pts)+1)*'-'}\n'
+    #     return ret
 
 class ecLetterKey:
     def __init__(self, ct: ecCayleyTable):
@@ -205,22 +205,22 @@ class ecLetterKey:
             i += 1
         return message
 
-    # Output the combination key in string format (for printing)
-    def __str__(self):
-        ret = f'Letter key:\n{9*' '}'
-        for p in self.letters:
-            n = 8 - len(str(p))
-            ret = ret + f'| {p} {n*' '}'
-        ret = ret + f'\n{11*(len(self.letters)+1)*'-'}\n'
-        for i in range(len(self.letters)):
-            n = 8 - len(str(self.letters[i]))
-            ret = ret + f'{self.letters[i]} {n*' '}'
-            for p in self.key[i]:
-                p = '\'' + p + '\''
-                n2 = 8 - len(str(p))
-                ret = ret + f'| {p} {n2*' '}'
-            ret = ret + f'\n{11*(len(self.letters)+1)*'-'}\n'
-        return ret
+    # # Output the combination key in string format (for printing)
+    # def __str__(self):
+    #     ret = f'Letter key:\n{9*' '}'
+    #     for p in self.letters:
+    #         n = 8 - len(str(p))
+    #         ret = ret + f'| {p} {n*' '}'
+    #     ret = ret + f'\n{11*(len(self.letters)+1)*'-'}\n'
+    #     for i in range(len(self.letters)):
+    #         n = 8 - len(str(self.letters[i]))
+    #         ret = ret + f'{self.letters[i]} {n*' '}'
+    #         for p in self.key[i]:
+    #             p = '\'' + p + '\''
+    #             n2 = 8 - len(str(p))
+    #             ret = ret + f'| {p} {n2*' '}'
+    #         ret = ret + f'\n{11*(len(self.letters)+1)*'-'}\n'
+    #     return ret
     
 def isPrime(num: int):
   if num < 2:

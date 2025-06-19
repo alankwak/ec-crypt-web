@@ -1,8 +1,5 @@
 import sys
 import os
-print("Current working dir:", os.getcwd())
-print("This file's dir:", os.path.dirname(os.path.abspath(__file__)))
-print("Files here:", os.listdir(os.path.dirname(__file__)))
 sys.path.append(os.path.dirname(__file__))
 
 from elliptic_curves_v2 import ecCayleyTable, ecLetterKey
