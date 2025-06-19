@@ -1,7 +1,8 @@
-from elliptic_curves_v2 import ecCayleyTable, ecLetterKey
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
+
+from elliptic_curves_v2 import ecCayleyTable, ecLetterKey
 import json
 
 a = int(sys.argv[1])
