@@ -1,19 +1,20 @@
 ## Elliptic Curve Cryptology Program ##
 
-def isUnique(pts):
-    for p in pts:
-        if pts.count(p) > 1:
-            return False
-    return True
+## -- Crude Testing Functions
+# def isUnique(pts):
+#     for p in pts:
+#         if pts.count(p) > 1:
+#             return False
+#     return True
 
-def testTable(table):
-    for i in range(len(table[0])):
-        pts2 = [table[j][i] for j in range(len(table[0]))]
-        if not isUnique(table[i]):
-            return i + 1
-        if not isUnique(pts2):
-            return -(i - 1)
-    return 0
+# def testTable(table):
+#     for i in range(len(table[0])):
+#         pts2 = [table[j][i] for j in range(len(table[0]))]
+#         if not isUnique(table[i]):
+#             return i + 1
+#         if not isUnique(pts2):
+#             return -(i - 1)
+#     return 0
 
 class ecCayleyTable:
     ## ------------------------------- Initialization ------------------------------- ##
@@ -27,9 +28,6 @@ class ecCayleyTable:
         else: self.a = a
         self.table = self.createCayleyTable()
         
-        
-            
-
     def createCayleyTable(self):
         table = [[None]*len(self.pts) for i in range(len(self.pts))]
 
@@ -48,8 +46,6 @@ class ecCayleyTable:
             for j in range(i+1, len(self.pts)):
                 if table[i][j] is None:
                     pt3 = self.combinePts(self.pts[i], self.pts[j])
-                    # if pt3 in table[i]:
-                    #     pt3 = self.oppositePt(self.pts[j])
                     table[i][j] = pt3
                     table[j][i] = pt3
 
@@ -109,7 +105,7 @@ class ecCayleyTable:
         
         curr_pt[0] = (curr_pt[0] + changeX) % self.mod
         curr_pt[1] = (curr_pt[1] + changeY) % self.mod
-        while curr_pt not in self.pts: #or curr_pt == self.oppositePt(pt1) or curr_pt == self.oppositePt(pt2):
+        while curr_pt not in self.pts:
             if show_steps: print(curr_pt)
             curr_pt[0] = (curr_pt[0] + changeX) % self.mod
             curr_pt[1] = (curr_pt[1] + changeY) % self.mod
@@ -154,6 +150,7 @@ class ecLetterKey:
         self.key = [[self.conversion[ct.pts.index(pt)] for pt in ct.table[i]] for i in range(len(self.letters))]
         self.generateCombos()
 
+    # creates a map from elliptic curve points to alphabetic characters
     def getConversion(self, pts):
         conversion = {}
         for i in range(len(pts)-1):
@@ -162,50 +159,50 @@ class ecLetterKey:
         conversion[pts.index('inf')] = ' '
         return conversion
     
+    # creates a dictionary mapping each letter to all the possible combinations that result in that letter
     def generateCombos(self):
         self.combos = {}
         for l in self.letters:
             self.combos[l] = []
-            for i in range(len(self.letters)-1):
-                for j in range(len(self.letters)-1):
-                    if self.key[i][j] == l:
-                        self.combos[l].append((self.letters[i], self.letters[j]))
-        self.combos[' '].pop()
+            
+        for i in range(len(self.letters)-1):
+            for j in range(len(self.letters)-1):
+                self.combos[self.key[i][j]].append((self.letters[i], self.letters[j]))
 
     def encrypt(self, message):
         import random
         
         ec_message = ''
         message = message.upper()
-        
-        junk_chars = []
-        for i in range(65, 90):
-            if self.combos.get(chr(i)) is None:
-                junk_chars.append(chr(i))
 
         for c in message:
-            if self.combos.get(c) is not None:
+            options = self.combos.get(c)
+            if options is not None and len(options) != 0:
                 rand_c = random.randint(0, len(self.combos.get(c))-1)
 
                 for l in self.combos[c][rand_c]:
-                    if l == ' ':
-                        ec_message += junk_chars[random.randint(0, len(junk_chars)-1)]
-                    else:
-                        ec_message += l
+                    ec_message += l
             else:
-                ec_message += c + junk_chars[random.randint(0, len(junk_chars)-1)]
+                ec_message += c
 
         return ec_message
 
     def decrypt(self, ec_message):
         message = ''
-        for i in range(0, len(ec_message), 2):
+        i = 0
+        while i < len(ec_message):
             l1 = ec_message[i] if ec_message[i] in self.letters else ' '
-            l2 = ec_message[i+1] if ec_message[i+1] in self.letters else ' '
-            if l1 == ' ' and l2 == ' ':
+            
+            if l1 == ' ':
                 message += ec_message[i]
             else:
-                message += self.key[self.letters.index(l1)][self.letters.index(l2)]
+                l2 = ec_message[i+1] if ec_message[i+1] in self.letters else ' '
+                if l2 != ' ':
+                    message += self.key[self.letters.index(l1)][self.letters.index(l2)]
+                    i += 1
+                else:
+                    message += ec_message[i]
+            i += 1
         return message
 
     # Output the combination key in string format (for printing)
