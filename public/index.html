@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Elliptic Curve Calculator</title>
+    <title>Elliptic Curve Groups</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/styles.css">
 
     <script type="text/javascript" id="MathJax-script" async
@@ -17,17 +16,59 @@
     <script src="components/ecTranslationTool.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="/">Elliptic Curve Calculator</a>
-        </div>
-    </nav>
+    <div class="title">
+        <h1>Elliptic Curve Group Calculator</h1>
+        <p>Easily calculate elliptic curve groups, plus some cryptology.</p>
+    </div>
+
+    <h2 style="text-align: center; text-decoration: underline;">How to use this tool:</h2>
+    <div class="info">
+        <p>
+            This web app asks allows the user to input an elliptic curve and solves for the elliptic curve group under a given modulus. You can visualize the curve via a graph or the group's Cayley table. <br /><br />
+            Additionally, I've included a tool that encrypts and decrypts messages using these groups. Once you have created an elliptic curve and the Cayley table has appeared, you can scroll down to the "Cryptology Tool" and encode/decode your own messages.<br /><br />
+            For more information about elliptic curve groups or the cryptology tool, scroll down to the bottom of the page.
+        </p>
+    </div>
 
     <ec-ecform ></ec-ecform>
 
     <ec-cayleytable></ec-cayleytable>
 
+    <h2 style="text-align: center; text-decoration: underline;">Cryptology Tool:</h2>
+
     <ec-translator></ec-translator>
+
+    <br ?><br />
+
+    <h2 style="text-align: center; text-decoration: underline;">What is an elliptic curve group?</h2>
+    <div class="info">
+        <p>
+            The elements of elliptic curve groups are the points that satisfy an elliptic equation, i.e. the points that satisfy <br /><br />
+
+            <div style="text-align: center;">\(y^2 \equiv x^3 + ax + b \pmod{n}\)</div> <br /><br />
+
+            for some \(a, b\), such that \(4a^3 + 27b^2 \pmod{n} \neq 0\). There is also an identity element \(\infty\). <br /><br />
+
+            The group operation is defined by \(A \cdot B = -C\), where \(C\) is the third point on the elliptic curve that also lies on the line drawn through \(A\) and \(B\). If no such point exists, we define \(C\) to be \(\infty\). The point \(-C\) is the point obtained by reflecting \(C\) over the x-axis.
+        </p>
+    </div>
+
+    <h2 style="text-align: center; text-decoration: underline;">How does the encryption tool work?</h2>
+    <div class="info">
+        <p>
+            We can assign every point a letter value, and then combine letters together using this operation to obtain a new letter. The encryption works by checking if the current letter can be represented by a combination of two letters from the key. If it can, then it is converted to this combination, and if it cannot, then it is left as it is. 
+            There are multiple ways to combine letters to get a given letter, so it is possible to obtain different encrypted messages for a single plaintext message. When encrypting, the program chooses the pairing it will use randomly.<br /><br />
+
+            To decrypt a message is fairly straightforward: again, we can check if a letter is representable in the key. If it is, then we check the next letter and combine the two using the key. If it isn't, then we leave it as it is and move to the next letter.<br /><br />
+
+            As you use the program, you might notice that you sometimes get messages where some of the original text does not appear to be encrypted. You probably have an elliptic curve group with very few elements, and therefore very few letters in the alphabet that are encodable. If you're having trouble finding a large elliptic curve group to use under mod 13, try 
+            \(a=1\) and \(b=0\).<br /><br />
+
+            You can find the code for the tool on <a href="https://github.com/alankwak/ec-crypt" target="_blank" rel="noopener noreferrer">my Github</a>.
+        </p>
+    </div>
+
+    <div class="footer"> Brought to you by <a href="https://alankwak.dev" target="_blank">Alan Kwak</a> </div>
 
     <script>
         const ecInput = document.querySelector('ec-ecform');

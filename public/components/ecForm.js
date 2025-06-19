@@ -75,6 +75,7 @@ class ecForm extends HTMLElement {
         
             <form id="ecForm">
                 <div>
+                    <h3>Enter elliptic curve parameters:</h3>
                     <span>y² ≡ x³ +</span>
                     <input type="number" style="width: 40px" id="a" name="a" placeholder="a" step="1" value="${this.a !== null ? this.a : ''}" required>
                     <span>x +</span>
