@@ -63,7 +63,6 @@ class ecForm extends HTMLElement {
             const mod = parseInt(modin.value, 10);
             const a = parseInt(ain.value, 10);
             const b = parseInt(bin.value, 10);
-            console.log((4*a*a*a + 27*b*b) % mod)
 
             if (!isPrime(mod) || mod >= 200) {
                 error.innerHTML = "Mod must be a prime number less than 200.";

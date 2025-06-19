@@ -40,19 +40,19 @@ app.get('/', async (req, res) => {
 });
     
 app.post('/update-curve', async (req, res) => {
-    const mod = parseInt(req.body.mod) || 13;
+    const mod = parseInt(req.body.mod);
     const a = parseInt(req.body.a);
     const b = parseInt(req.body.b);
 
-    if(!a || !b) {
-        res.status(500).send("Invalid Request");
+    if(a === null || b === null || mod === null) {
+        res.status(400).send("Invalid Request");
+        return;
     }
 
     try {
         let ecInfo = await executePythonScript('py_scripts/getEcInfo.py', [a, b, mod, "", ""]);
         ecInfo = JSON.parse(ecInfo);
 
-        console.log('success');
         res.json({
             'cthead': ecInfo.cthead, 
             'ctbody': ecInfo.ctbody,
@@ -65,7 +65,53 @@ app.post('/update-curve', async (req, res) => {
     }
 });
 
+app.post('/encrypt', async (req, res) => {
+    const mod = parseInt(req.body.mod) || 13;
+    const a = parseInt(req.body.a);
+    const b = parseInt(req.body.b);
+    const msg = req.body.msg;
 
+    if(a === null || b === null) {
+        res.status(400).send("Invalid Request");
+        return;
+    }
+
+    try {
+        let ecInfo = await executePythonScript('py_scripts/getEcInfo.py', [a, b, mod, msg, ""]);
+        ecInfo = JSON.parse(ecInfo);
+        
+        res.json({
+            encrypted_msg: ecInfo.encrypted
+        });
+    } catch (error) {
+        console.error('Error executing Python script:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post('/decrypt', async (req, res) => {
+    const mod = parseInt(req.body.mod) || 13;
+    const a = parseInt(req.body.a);
+    const b = parseInt(req.body.b);
+    const msg = req.body.msg;
+
+    if(a === null || b === null) {
+        res.status(400).send("Invalid Request");
+        return;
+    }
+
+    try {
+        let ecInfo = await executePythonScript('py_scripts/getEcInfo.py', [a, b, mod, "", msg]);
+        ecInfo = JSON.parse(ecInfo);
+        
+        res.json({
+            plaintext_msg: ecInfo.decrypted
+        });
+    } catch (error) {
+        console.error('Error executing Python script:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 // Start the server
 app.listen(port, () => {

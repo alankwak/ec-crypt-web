@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Elliptic Curve Cryptology</title>
+    <title>Elliptic Curve Calculator</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/styles.css">
@@ -13,18 +13,22 @@
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
     <script src="components/ecForm.js"></script>
+    <script src="components/ecCayleyTable.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="/">Elliptic Curve Cryptology Calculator</a>
+            <a class="navbar-brand" href="/">Elliptic Curve Calculator</a>
         </div>
     </nav>
 
     <ec-ecform ></ec-ecform>
 
+    <ec-cayleytable></ec-cayleytable>
+
     <script>
         const ecInput = document.querySelector('ec-ecform');
+        const ecTable = document.querySelector('ec-cayleytable');
         document.addEventListener('create-new-curve', async e => {
             if(ecInput) {
                 try {
@@ -39,6 +43,9 @@
                     });
                     if(response.ok) {
                         const ecInfo = await response.json();
+                        if(ecTable) {
+                            ecTable.setAttribute('ecinfo', JSON.stringify(ecInfo));
+                        }
                     }
                 } catch(err) {
                     console.log(`Error: ${err}`);
