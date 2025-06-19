@@ -44,7 +44,7 @@ app.post('/update-curve', async (req, res) => {
     const a = parseInt(req.body.a);
     const b = parseInt(req.body.b);
 
-    if(a === null || b === null || mod === null) {
+    if(isNaN(a) || isNaN(b) || isNaN(mod)) {
         res.status(400).send("Invalid Request");
         return;
     }
@@ -71,7 +71,7 @@ app.post('/encrypt', async (req, res) => {
     const b = parseInt(req.body.b);
     const msg = req.body.msg;
 
-    if(a === null || b === null) {
+    if(isNaN(a) || isNaN(b)) {
         res.status(400).send("Invalid Request");
         return;
     }
@@ -95,7 +95,7 @@ app.post('/decrypt', async (req, res) => {
     const b = parseInt(req.body.b);
     const msg = req.body.msg;
 
-    if(a === null || b === null) {
+    if(isNaN(a) || isNaN(b)) {
         res.status(400).send("Invalid Request");
         return;
     }
