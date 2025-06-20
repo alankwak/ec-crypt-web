@@ -25,7 +25,7 @@ const executePythonScript = (scriptPath, args) => {
 };
 
 const app = express();  
-const port = 53140;
+const port = process.env.PORT || 53140;
 
 app.use(morgan('dev'));
 app.use(express.static('public'));
@@ -113,7 +113,11 @@ app.post('/decrypt', async (req, res) => {
     }
 });
 
+app.use((req, res) => {
+    res.status(404).send(`Sorry, ${req.url} cannot be found here.`);
+})
+
 // Start the server
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on port ${port}`);
 });
