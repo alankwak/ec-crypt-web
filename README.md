@@ -1,3 +1,6 @@
+## UPDATE: Now on web!
+I've released a web app where you can use this program! Head over to [ec-crypt.alankwak.dev](ec-crypt.alankwak.dev) and let me know what you think. If you want to use the program on your own machine, make sure to un-comment the ```__str__``` methods for ```ecCayleyTable``` and ```ecLetterKey``` (apparently the f-string formatting I used doesn't work on the older version of Python that is on the server I am using, which is fine because I don't need to print the tables on the website).
+
 # ec-crypt
 
 In my abstract algebra course, we did some work with elliptic curves and the groups they create under modular arithmetic. This program uses these groups to encode and decode messages.
