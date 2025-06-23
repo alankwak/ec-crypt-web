@@ -11,6 +11,7 @@
     <script type="text/javascript" id="MathJax-script" async
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
+    <script src="https://www.desmos.com/api/v1.11/calculator.js?apiKey=4a3132134e7f42e49c97bab9317f2ca7"></script>
     <script src="components/ecForm.js"></script>
     <script src="components/ecCayleyTable.js"></script>
     <script src="components/ecTranslationTool.js"></script>
@@ -30,9 +31,15 @@
         </p>
     </div>
 
-    <ec-ecform ></ec-ecform>
-
+    <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin: 30px auto;">
+        <ec-ecform ></ec-ecform>
+        <div id="curve_calculator" style="width: 300px; height: 300px;"></div>
+    </div>
+    
     <ec-cayleytable></ec-cayleytable>
+    <div style="display: flex; justify-content: center; margin: 30px auto;">
+        <div id="point_calculator" style="width: 500px; height: 300px; display: none;"></div>
+    </div>
 
     <h2 style="text-align: center; text-decoration: underline;">Cryptology Tool:</h2>
 
@@ -64,13 +71,27 @@
             As you use the program, you might notice that you sometimes get messages where some of the original text does not appear to be encrypted. You probably have an elliptic curve group with very few elements, and therefore very few letters in the alphabet that are encodable. If you're having trouble finding a large elliptic curve group to use under mod 13, try 
             \(a=1\) and \(b=0\).<br /><br />
 
-            You can find the code for the tool on <a href="https://github.com/alankwak/ec-crypt" target="_blank" rel="noopener noreferrer">my Github</a>.
+            You can find the code for the tool on <a href="https://github.com/alankwak/ec-crypt-web" target="_blank" rel="noopener noreferrer">my Github</a>.
         </p>
     </div>
 
     <div class="footer"> Brought to you by <a href="https://alankwak.dev" target="_blank">Alan Kwak</a> </div>
 
     <script>
+        var elt = document.getElementById('curve_calculator');
+        var curve_calculator = Desmos.GraphingCalculator(elt, {
+            expressions: false,
+            settingsMenu: false,
+        });
+
+        var elt2 = document.getElementById('point_calculator');
+        var point_calculator = Desmos.GraphingCalculator(elt2, {
+            expressions: false,
+            settingsMenu: false,
+            zoomButtons: false,
+            lockViewport: true,
+        })
+
         const ecInput = document.querySelector('ec-ecform');
         const ecTable = document.querySelector('ec-cayleytable');
         const ecTranslator = document.querySelector('ec-translator');
@@ -88,6 +109,28 @@
                     });
                     if(response.ok) {
                         const ecInfo = await response.json();
+                        
+                        curve_calculator.setExpression({ id: 'curve', latex: `y^2 = x^3 + ${ecInput.a}x + ${ecInput.b}`, color: 'red' }); //plot curve
+                        
+                        elt2.style.display = 'block';
+                        point_calculator.setBlank();
+                        point_calculator.setMathBounds({
+                            left: -1,
+                            right: ecInput.mod,
+                            bottom: -1 * parseInt(ecInput.mod / 2) - 1,
+                            top: parseInt((ecInput.mod -1) / 2) + 1,
+                        });
+                        ecInfo.cthead.forEach((p, index) => {
+                            y = p[1] > ecInput.mod / 2 ? p[1] - ecInput.mod : p[1];
+                            point_calculator.setExpression({ 
+                                id: `p${index}`, 
+                                latex: `(${p[0]}, ${y})`, 
+                                color: 'blue', 
+                                label: ecInfo.echead[index], 
+                                showLabel: true
+                            });
+                        })
+                        
                         if(ecTable) {
                             ecTable.setAttribute('ecinfo', JSON.stringify(ecInfo));
                         }
