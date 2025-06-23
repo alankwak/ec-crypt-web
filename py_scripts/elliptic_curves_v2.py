@@ -154,8 +154,10 @@ class ecLetterKey:
     def getConversion(self, pts):
         conversion = {}
         for i in range(len(pts)-1):
-            val = chr(65 + pts[i][0]*2 + i % 2)
-            conversion[i] = val
+            val = 65 + pts[i][0]*2
+            if chr(val) in conversion.values():
+                val += 1
+            conversion[i] = chr(val)
         conversion[pts.index('inf')] = ' '
         return conversion
     
