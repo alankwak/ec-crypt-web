@@ -88,6 +88,10 @@ class ecCayleyTable extends HTMLElement {
                 td {
                     background-color: #ffffff;
                 }
+
+                .highlight {
+                    background-color: aliceblue;
+                }
             </style>
         
             <div>    
@@ -143,8 +147,66 @@ class ecCayleyTable extends HTMLElement {
                     letterTable.style.display = 'inline-table';
                 }
             });
+
+            ptTable.addEventListener("mouseover", e => {
+                const cell = e.target.closest("td");
+                if (!cell) return;
+
+                const row = cell.parentElement;
+                const bodyRows = ptTable.tBodies[0].rows;
+                const rowIndex = [...ptTable.rows].indexOf(row);
+                const cellIndex = [...cell.parentElement.children].indexOf(cell);
+
+                // Highlight cells in the same row up to the hovered cell
+                for (let i = 0; i <= cellIndex; i++) {
+                    row.children[i].classList.add("highlight");
+                }
+
+                // Highlight cells in the same column up to the hovered cell
+                ptTable.rows[0].children[cellIndex].classList.add("highlight");
+                for (let i = 0; i <= rowIndex; i++) {
+                    const targetRow = bodyRows[i];
+                    const colCell = targetRow.children[cellIndex];
+                    if (colCell) colCell.classList.add("highlight");
+                }
+            });
+
+            ptTable.addEventListener("mouseout", function () {
+                ptTable.querySelectorAll("td").forEach(td => td.classList.remove("highlight"));
+                ptTable.querySelectorAll("th").forEach(th => th.classList.remove("highlight"));
+            });
+
+            letterTable.addEventListener("mouseover", e => {
+                const cell = e.target.closest("td");
+                if (!cell) return;
+
+                const row = cell.parentElement;
+                const bodyRows = letterTable.tBodies[0].rows;
+                const rowIndex = [...letterTable.rows].indexOf(row);
+                const cellIndex = [...cell.parentElement.children].indexOf(cell);
+
+                // Highlight cells in the same row up to the hovered cell
+                for (let i = 0; i <= cellIndex; i++) {
+                    row.children[i].classList.add("highlight");
+                }
+
+                // Highlight cells in the same column up to the hovered cell
+                letterTable.rows[0].children[cellIndex].classList.add("highlight");
+                for (let i = 0; i <= rowIndex; i++) {
+                    const targetRow = bodyRows[i];
+                    const colCell = targetRow.children[cellIndex];
+                    if (colCell) colCell.classList.add("highlight");
+                }
+            });
+
+            letterTable.addEventListener("mouseout", function () {
+                letterTable.querySelectorAll("td").forEach(td => td.classList.remove("highlight"));
+                letterTable.querySelectorAll("th").forEach(th => th.classList.remove("highlight"));
+            });
         }
+ 
     }
+
 }
 
 customElements.define("ec-cayleytable", ecCayleyTable)

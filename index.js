@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 
 // Basic route
 
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
     res.render('index.html')
     return
 });
