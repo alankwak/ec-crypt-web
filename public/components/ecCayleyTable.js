@@ -54,11 +54,14 @@ class ecCayleyTable extends HTMLElement {
                 }
 
                 .table-wrapper {
+                    display: flex;
+                    align-items: flex-start;
                     width: 100%;
                     max-width: 80vw;
-                    overflow-x: auto;
-                    border-radius: 8px;
                     border: 1px solid #ddd;
+                }
+                .table-sub-wrapper {
+                    overflow-x: auto;
                 }
                 @media( max-width: 700px) {
                     .table-wrapper {
@@ -78,6 +81,7 @@ class ecCayleyTable extends HTMLElement {
                     padding: 6px 12px;
                     font-size: 12px;
                     text-align: center;
+                    height: 20px;
                 }
 
                 th {
@@ -97,54 +101,72 @@ class ecCayleyTable extends HTMLElement {
             <div>    
                 <button id="toggleTable">Change Display</button>
                 <div class="table-wrapper">
-                    <table id="ptTable">
-                        <thead>
-                            <th>Cayley Table</th>
-                            ${this.cthead.map(h => `<th>(${h})</th>`).join('')}
-                        </thead>
-                        
+                    <table id="ptTableLeft">
+                        <thead><th>Cayley Table</th></thead>
                         <tbody>
-                            ${this.ctbody.map((r, index) => {
-                                return `
-                                <tr>
-                                    <th>(${this.cthead[index]})</th>
-                                    ${r.map(point => `<td>(${point})</td>`).join('')}
-                                <tr>`
-                            }).join('')}
+                            ${this.cthead.map(h => `<tr><th>(${h})</th></tr>`).join('')}
                         </tbody>
                     </table>
 
-                    <table style="display: none" id="letterTable">
-                        <thead>
-                            <th>Letter Key</th>
-                            ${this.echead.map(h => `<th>'${h}'</th>`).join('')}
-                        </thead>
-                        
+                    <table id="letterTableLeft" style="display: none">
+                        <thead><th>Letter Table</th></thead>
                         <tbody>
-                            ${this.ecbody.map((r, index) => {
-                                    return `
-                                    <tr>
-                                        <th>'${this.echead[index]}'</th>
-                                        ${r.map(letter => `<td>'${letter}'</td>`).join('')}
-                                    <tr>`
-                                }).join('')}
+                            ${this.echead.map(h => `<tr><th>'${h}'</th></tr>`).join('')}
                         </tbody>
                     </table>
+
+                    <div class="table-sub-wrapper">
+                        <table id="ptTable">
+                            <thead>
+                                ${this.cthead.map(h => `<th>(${h})</th>`).join('')}
+                            </thead>
+                            
+                            <tbody>
+                                ${this.ctbody.map((r) => {
+                                    return `
+                                    <tr>
+                                        ${r.map(point => `<td>(${point})</td>`).join('')}
+                                    <tr>`
+                                }).join('')}
+                            </tbody>
+                        </table>
+
+                        <table style="display: none" id="letterTable">
+                            <thead>
+                                ${this.echead.map(h => `<th>'${h}'</th>`).join('')}
+                            </thead>
+                            
+                            <tbody>
+                                ${this.ecbody.map((r) => {
+                                        return `
+                                        <tr>
+                                            ${r.map(letter => `<td>'${letter}'</td>`).join('')}
+                                        <tr>`
+                                    }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         ` : '';
 
         const toggleButton = this.shadowRoot.getElementById('toggleTable');
         const ptTable = this.shadowRoot.getElementById('ptTable');
+        const ptTableL = this.shadowRoot.getElementById('ptTableLeft');
         const letterTable = this.shadowRoot.getElementById('letterTable');
+        const letterTableL = this.shadowRoot.getElementById('letterTableLeft');
         if(toggleButton) {
             toggleButton.addEventListener('click', e => {
                 if (ptTable.style.display === 'none') {
                     ptTable.style.display = 'inline-table';
+                    ptTableL.style.display = 'inline-table'
                     letterTable.style.display = 'none';
+                    letterTableL.style.display = 'none';
                 } else {
                     ptTable.style.display = 'none';
+                    ptTableL.style.display = 'none';
                     letterTable.style.display = 'inline-table';
+                    letterTableL.style.display = 'inline-table';
                 }
             });
 
@@ -163,7 +185,7 @@ class ecCayleyTable extends HTMLElement {
                 }
 
                 // Highlight cells in the same column up to the hovered cell
-                this.rows[0].children[cellIndex].classList.add("highlight");
+                // this.rows[0].children[cellIndex].classList.add("highlight");
                 for (let i = 0; i <= rowIndex; i++) {
                     const targetRow = bodyRows[i];
                     const colCell = targetRow.children[cellIndex];
