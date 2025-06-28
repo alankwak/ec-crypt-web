@@ -193,7 +193,7 @@ class ecLetterKey:
         message = ''
         i = 0
         while i < len(ec_message):
-            l1 = ec_message[i] if ec_message[i] in self.letters else ' '
+            l1 = ec_message[i] if (ec_message[i] in self.letters and i != len(ec_message) - 1) else ' '
             
             if l1 == ' ':
                 message += ec_message[i]
